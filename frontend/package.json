@@ -58,7 +58,7 @@
     "email": "yozi-developer@yandex.ru",
     "name": "Gennadii Fairushin"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "mobx": "^4.2.0",
