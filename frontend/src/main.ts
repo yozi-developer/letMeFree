@@ -1,8 +1,11 @@
 import { app, BrowserWindow } from "electron";
 import * as path from "path";
 import * as url from "url";
+import { Channel, IVkTokenError, IVkTokenUpdated } from "./common/ipc";
 
-let win: BrowserWindow | null;
+const authenticateVK = require("electron-vk-oauth2");
+
+let win: BrowserWindow | undefined;
 
 const installExtensions = async () => {
   const installer = require("electron-devtools-installer");
@@ -13,6 +16,28 @@ const installExtensions = async () => {
     extensions.map(name => installer.default(installer[name], forceDownload))
   ).catch(console.log);
 };
+
+async function authenticateInVK(): Promise<string> {
+  let token: string = "";
+  try {
+    const res = await authenticateVK(
+      {
+        appId: "6450302",
+        scope: "audio,photos,video",
+        revoke: false
+      },
+      {
+        parent: win
+      }
+    );
+    console.log({ res });
+    token = res.accessToken;
+  } catch (e) {
+    console.error(e);
+  }
+
+  return token;
+}
 
 const createWindow = async () => {
   if (process.env.NODE_ENV !== "production") {
@@ -39,8 +64,20 @@ const createWindow = async () => {
   }
 
   win.on("closed", () => {
-    win = null;
+    win = undefined;
   });
+
+  let token: string | undefined;
+
+  try {
+    token = await authenticateInVK();
+    const message: IVkTokenUpdated = { token, action: "updated" };
+    win.webContents.send(Channel.VK_TOKEN, message);
+  } catch (e) {
+    console.log(e);
+    const message: IVkTokenError = { reason: e, action: "error" };
+    win.webContents.send(Channel.VK_TOKEN, message);
+  }
 };
 
 app.on("ready", createWindow);
@@ -52,7 +89,7 @@ app.on("window-all-closed", () => {
 });
 
 app.on("activate", () => {
-  if (win === null) {
+  if (!win) {
     createWindow().catch(reason => console.error(reason));
   }
 });

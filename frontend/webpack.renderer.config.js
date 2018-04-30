@@ -1,46 +1,48 @@
-const path = require('path');
-const webpack = require('webpack');
-const merge = require('webpack-merge');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const webpack = require("webpack");
+const merge = require("webpack-merge");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const baseConfig = require('./webpack.base.config');
+const baseConfig = require("./webpack.base.config");
 
 module.exports = merge.smart(baseConfig, {
-  target: 'electron-renderer',
+  target: "electron-renderer",
   entry: {
-    app: './src/app.tsx'
+    app: [
+      "./src/app.tsx"
+    ]
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         include: [
-          path.resolve(__dirname, 'src')
+          path.resolve(__dirname, "src")
         ],
         exclude: [
-          path.resolve(__dirname, 'src', 'main.ts')
+          path.resolve(__dirname, "src", "main.ts")
         ],
         use: [
           {
-            loader: 'babel-loader',
+            loader: "babel-loader",
             options: {
-              plugins: [
-                'react-hot-loader/babel',
-              ],
-            },
-          }
+              babelrc: true,
+              plugins: ["react-hot-loader/babel"]
+            }
+          },
+          "ts-loader" // (or awesome-typescript-loader)
         ]
       },
       {
         test: /\.css$/,
-        loaders: ['style-loader', 'css-loader']
+        loaders: ["style-loader", "css-loader"]
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/,
         use: [
-          'file-loader',
+          "file-loader",
           {
-            loader: 'image-webpack-loader',
+            loader: "image-webpack-loader",
             options: {
               bypassOnDebug: true
             }
@@ -49,16 +51,16 @@ module.exports = merge.smart(baseConfig, {
       },
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       {
-        enforce: 'pre',
+        enforce: "pre",
         test: /\.js$/,
-        loader: 'source-map-loader'
+        loader: "source-map-loader"
       }
     ]
   },
   plugins: [
     new HtmlWebpackPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")
     })
   ]
 });

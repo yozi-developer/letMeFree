@@ -17,12 +17,12 @@ module.exports = merge.smart(baseConfig, {
           {
             loader: 'babel-loader',
             options: {
-              plugins: [
-                'react-hot-loader/babel',
-              ],
+              babelrc: true,
+              plugins: ['react-hot-loader/babel'],
             },
-          }
-        ]
+          },
+          'ts-loader', // (or awesome-typescript-loader)
+        ],
       }
     ]
   },
