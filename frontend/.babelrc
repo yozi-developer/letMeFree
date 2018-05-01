@@ -1,7 +1,13 @@
 {
   "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": ["last 1 Electron version"]
+        }
+      }
+    ]
   ],
-  "plugins": [
-    "syntax-dynamic-import"
-  ]
+  "plugins": ["syntax-dynamic-import"]
 }

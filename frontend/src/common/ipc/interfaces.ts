@@ -23,3 +23,13 @@ export function isVkTokenError(
 ): message is IVkTokenError {
   return message.action === ACTION_ERROR;
 }
+
+const ACTION_REQUEST_REFRESH_TOKEN = "request-refresh-token";
+export interface IVkRequestTokenRefresh extends IVkTokenMessage {
+  action: typeof ACTION_REQUEST_REFRESH_TOKEN;
+}
+export function isVkRequestTokenRefresh(
+  message: IVkTokenMessage
+): message is IVkRequestTokenRefresh {
+  return message.action === ACTION_REQUEST_REFRESH_TOKEN;
+}

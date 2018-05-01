@@ -1,7 +1,8 @@
-import { ipcRenderer } from "electron";
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import { action, observable } from "mobx";
-import { Channel, isVkTokenUpdated, IVkTokenMessage } from "../common/ipc";
+import { isVkTokenUpdated, IVkTokenMessage } from "../common/ipc";
+import { VkAuthIpcSymbol } from "../inversify";
+import { IVkAuthIpc } from "../services/interfaces";
 import { IAppStore } from "./interfaces";
 
 @injectable()
@@ -13,8 +14,12 @@ export class AppStore implements IAppStore {
     this.token = newToken;
   }
 
-  constructor() {
-    ipcRenderer.on(Channel.VK_TOKEN, this.onVkTokenMessage);
+  public unmount() {
+    this.vkAuthIpc.detachListener(this.onVkTokenMessage);
+  }
+
+  constructor(@inject(VkAuthIpcSymbol) private vkAuthIpc: IVkAuthIpc) {
+    this.vkAuthIpc.attachListener(this.onVkTokenMessage);
   }
 
   private onVkTokenMessage = (event: any, payload: IVkTokenMessage) => {

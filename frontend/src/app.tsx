@@ -1,11 +1,16 @@
 import "reflect-metadata";
+import "../dist/semantic/semantic.min.css";
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { AppContainer } from "react-hot-loader";
 import Application from "./components/Application";
+import { container } from "./inversify";
+import { bindings } from "./inversify/bindings";
 
-console.log("app.tsx");
+// load DI-container without circular dependencies in webpack
+container.load(bindings);
+
 // Create main element
 const mainElement = document.createElement("div");
 document.body.appendChild(mainElement);
