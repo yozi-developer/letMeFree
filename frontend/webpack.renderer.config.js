@@ -29,8 +29,18 @@ module.exports = merge.smart(baseConfig, {
         ]
       },
       {
+        include: [path.resolve(__dirname, "dist")],
         test: /\.css$/,
         loaders: ["style-loader", "css-loader"]
+      },
+      {
+        test: /\.css$/,
+        include: [path.resolve(__dirname, "src")],
+        use: [
+          'style-loader',
+          { loader: 'css-loader', options: {  modules: true, importLoaders: 1 } },
+          'postcss-loader'
+        ]
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/,

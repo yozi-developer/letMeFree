@@ -1,6 +1,8 @@
 import "reflect-metadata";
 import "../dist/semantic/semantic.min.css";
+import "./styles/global.css";
 
+import { configure } from "mobx";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { AppContainer } from "react-hot-loader";
@@ -8,6 +10,7 @@ import Application from "./components/Application";
 import { container } from "./inversify";
 import { bindings } from "./inversify/bindings";
 
+configure({ enforceActions: true, computedRequiresReaction: true });
 // load DI-container without circular dependencies in webpack
 container.load(bindings);
 
