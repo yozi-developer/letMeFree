@@ -13,18 +13,18 @@ module.exports = merge.smart(baseConfig, {
       {
         test: /\.tsx?$/,
         include: [
+          path.resolve(__dirname, 'src', 'common'),
           path.resolve(__dirname, 'src', 'main.ts')
         ],
         use: [
           {
             loader: 'babel-loader',
             options: {
-              plugins: [
-                'react-hot-loader/babel',
-              ],
+              babelrc: true,
             },
-          }
-        ]
+          },
+          'ts-loader', // (or awesome-typescript-loader)
+        ],
       }
     ]
   },

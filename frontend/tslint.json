@@ -7,6 +7,8 @@
   ],
   "jsRules": {},
   "rules": {
+    "function-name": false,
+    "variable-name": false
   },
   "rulesDirectory": []
 }

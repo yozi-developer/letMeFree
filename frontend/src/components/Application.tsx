@@ -1,32 +1,22 @@
+import { observer } from "mobx-react";
 import * as React from "react";
 import { hot } from "react-hot-loader";
+import { AppStoreSymbol, lazyInject } from "../inversify";
+import { IAppStore } from "../stores/interfaces";
+import { SignInScreen } from "./SignInScreen";
 
-interface IApplocationState {
-  counter: number;
-}
+class Application extends React.Component<{}, {}> {
+  @lazyInject(AppStoreSymbol) private appStore!: IAppStore;
 
-class Application extends React.Component<{}, IApplocationState> {
-  public state: IApplocationState = {
-    counter: 0
-  };
-
-  public render() {
-    return (
-      <div>
-        Hello World from Electron!<button onClick={this.onClick}>
-          {this.state.counter}
-        </button>
-      </div>
-    );
+  public componentWillUnmount() {
+    this.appStore.unmount();
   }
-
-  private onClick = () => {
-    this.setState((prevState: IApplocationState) => {
-      return {
-        counter: prevState.counter + 1
-      };
-    });
-  };
+  public render() {
+    const token = this.appStore.token;
+    return token ? <div>Your token is "{token}"</div> : <SignInScreen />;
+  }
 }
 
-export default hot(module)(Application);
+const WrappedComponent = observer(Application);
+
+export default hot(module)(WrappedComponent);
