@@ -19,6 +19,6 @@ afterAll(() => {
   serverUrl = "";
 });
 it("starts", async () => {
-  const res = await Axios.get(`${serverUrl}/ping`);
+  const res = await axios.get(`${serverUrl}/ping`);
   expect(res.data).toBe("pong");
 });
