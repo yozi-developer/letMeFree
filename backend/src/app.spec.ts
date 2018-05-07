@@ -1,21 +1,24 @@
 import axios from "axios";
 import { Server } from "net";
 import { app } from "./app";
+import { container } from "./inversify";
+import { bindings } from "./inversify/bindings";
 
 let server: Server | undefined;
 let serverUrl: string = "";
-beforeAll(() => {
+beforeAll(async () => {
   server = app.listen();
+  await container.loadAsync(bindings);
   const { family, address, port } = server.address();
   serverUrl = `http://${
     family === "IPv6" ? "[" + address + "]" : address
   }:${port}`;
-  console.log(serverUrl);
 });
 afterAll(() => {
   if (server) {
     server.close();
   }
+  container.unload(bindings);
   serverUrl = "";
 });
 it("starts", async () => {

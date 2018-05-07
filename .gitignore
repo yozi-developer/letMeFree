@@ -876,3 +876,5 @@ node_modules/yargs-parser/
 node_modules/yargs/
 node_modules/yeoman-environment/
 node_modules/yeoman-generator/
+test.config.js
+src/types/
