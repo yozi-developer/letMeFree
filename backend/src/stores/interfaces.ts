@@ -1,7 +1,7 @@
-import { Observable } from "rxjs";
+import { BehaviorSubject } from "rxjs/src/internal/BehaviorSubject";
 
 export interface IAppStore {
-  readonly accessToken: Observable<string | undefined>;
+  readonly accessToken: BehaviorSubject<string | undefined>;
 
   setAccessToken(newToken: string): void;
 }

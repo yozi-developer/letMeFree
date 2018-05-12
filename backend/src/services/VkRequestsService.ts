@@ -20,7 +20,11 @@ export class VkRequestsService implements IVkRequestsService {
     params: { [p: string]: string }
   ): Promise<R> {
     const response = await this.axios.get<R>(`${this.base}/${methodName}`, {
-      params: { ...params, v: this.config.vkApiVersion }
+      params: {
+        ...params,
+        v: this.config.vkApiVersion,
+        access_token: this.appStore.accessToken.getValue()
+      }
     });
 
     return response.data;

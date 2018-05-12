@@ -36,7 +36,7 @@ it("send request to the vk api", async () => {
   await vkService.get(methodName, query);
   const vkUrl = `https://api.vk.com/method/${methodName}`;
   const requestConfig: AxiosRequestConfig = {
-    params: { ...query, v: config.vkApiVersion }
+    params: { ...query, v: config.vkApiVersion, access_token: accessToken }
   };
   expect(axiosSpy).toBeCalledWith(vkUrl, requestConfig);
   axiosSpy.mockReset();
