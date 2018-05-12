@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Server } from "net";
-import { app } from "./app";
-import { container } from "./inversify";
-import { bindings } from "./inversify/bindings";
+import { app } from "../src/app";
+import { container } from "../src/inversify";
+import { bindings } from "../src/inversify/bindings";
 
 let server: Server | undefined;
 let serverUrl: string = "";

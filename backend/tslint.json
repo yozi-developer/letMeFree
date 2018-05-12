@@ -2,12 +2,19 @@
   "defaultSeverity": "error",
   "extends": [
     "tslint-config-airbnb",
-    "tslint-config-prettier"
+    "tslint-config-prettier",
+    "rxjs-tslint"
   ],
   "jsRules": {},
   "rules": {
     "function-name": false,
-    "variable-name": false
+    "variable-name": false,
+    "import-name": false,
+    "ter-prefer-arrow-callback": {
+      "options": {
+        "allowNamedFunctions": true
+      }
+    }
   },
   "rulesDirectory": []
 }
